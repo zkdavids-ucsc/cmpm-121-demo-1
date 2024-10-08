@@ -21,8 +21,8 @@ counterDiv.innerHTML = count.toString() + " demons";
 app.append(counterDiv);
 
 const incrementCounter = (): void => {
-    count += 1;
-    counterDiv.innerHTML = count.toString() + " demons";
+  count += 1;
+  counterDiv.innerHTML = count.toString() + " demons";
 };
 
-button.addEventListener('click', incrementCounter);
+button.addEventListener("click", incrementCounter);
