@@ -11,6 +11,18 @@ app.append(header);
 
 const buttonText = "Click Here👹";
 
-const butt = document.createElement("button");
-butt.innerHTML = buttonText;
-app.append(butt);
+const button = document.createElement("button");
+button.innerHTML = buttonText;
+app.append(button);
+
+let count: number = 0;
+const counterDiv = document.createElement("h2");
+counterDiv.innerHTML = count.toString() + " demons";
+app.append(counterDiv);
+
+const incrementCounter = (): void => {
+    count += 1;
+    counterDiv.innerHTML = count.toString() + " demons";
+};
+
+button.addEventListener('click', incrementCounter);
