@@ -26,3 +26,5 @@ const incrementCounter = (): void => {
 };
 
 button.addEventListener("click", incrementCounter);
+
+setInterval(incrementCounter, 1000);
