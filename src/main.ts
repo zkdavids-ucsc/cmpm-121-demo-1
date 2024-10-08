@@ -22,9 +22,21 @@ app.append(counterDiv);
 
 const incrementCounter = (): void => {
   count += 1;
-  counterDiv.innerHTML = count.toString() + " demons";
+  counterDiv.innerHTML = count.toFixed(2) + " demons";
 };
 
 button.addEventListener("click", incrementCounter);
 
-setInterval(incrementCounter, 1000);
+// setInterval(incrementCounter, 1000);
+
+let zero = performance.now();
+function increment(){
+  // const value = (performance.now() - zero) / 1000;
+  // count += value;
+  const value = (performance.now() - zero) / 1000;
+  count += value;
+  counterDiv.innerHTML = count.toFixed(2) + " demons";
+  zero = performance.now();
+}
+requestAnimationFrame(increment);
+setInterval(increment, (performance.now() - zero) / 1000);
