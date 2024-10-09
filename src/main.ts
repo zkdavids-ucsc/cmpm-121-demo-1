@@ -62,7 +62,7 @@ app.append(upgrade1, upgrade2, upgrade3);
 
 const upgradeCounter1 = (): void => {
   count -= 10;
-  upgradeValue += .1;
+  upgradeValue += 0.1;
   upgrade1.disabled = count < 10;
   upgrade2.disabled = count < 100;
   upgrade3.disabled = count < 1000;
