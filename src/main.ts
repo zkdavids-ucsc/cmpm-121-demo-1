@@ -2,7 +2,7 @@ import "./style.css";
 
 const app: HTMLDivElement = document.querySelector("#app")!;
 
-const gameName = "My Evil Pals";
+const gameName = "Me & My Evil Pals";
 document.title = gameName;
 
 //header
@@ -13,7 +13,7 @@ app.append(header);
 //click button
 const buttonText = "Plot Evil👹";
 const clickButton = document.createElement("button");
-clickButton.innerHTML = buttonText;
+clickButton.innerHTML = `<font size = "12">` + buttonText + `</font>`;
 app.append(clickButton);
 
 //counter
@@ -37,8 +37,10 @@ interface Item {
 
 const availableItems: Item[] = [
   { name: "Goblin", cost: 10, rate: 0.1, purchased: 0, button },
-  { name: "Ogre", cost: 100, rate: 2, purchased: 0, button },
-  { name: "Demon", cost: 1000, rate: 50, purchased: 0, button },
+  { name: "Orc", cost: 100, rate: 2, purchased: 0, button },
+  { name: "Ogre", cost: 1000, rate: 50, purchased: 0, button },
+  { name: "Demon", cost: 10000, rate: 1000, purchased: 0, button },
+  { name: "Devil", cost: 100000, rate: 20000, purchased: 0, button },
 ];
 
 for (let i = 0; i < availableItems.length; i++) {
