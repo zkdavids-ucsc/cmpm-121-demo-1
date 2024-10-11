@@ -12,9 +12,9 @@ app.append(header);
 
 //click button
 const buttonText = "Plot Evil👹";
-const button = document.createElement("button");
-button.innerHTML = buttonText;
-app.append(button);
+const clickButton = document.createElement("button");
+clickButton.innerHTML = buttonText;
+app.append(clickButton);
 
 //counter
 let count: number = 0;
@@ -22,38 +22,39 @@ const counterDiv = document.createElement("h2");
 counterDiv.innerHTML = count.toString() + " units of evil";
 app.append(counterDiv);
 
-//upgrades
-const upgrade1 = document.createElement("button");
-upgrade1.innerHTML = "Goblin <br /> Cost: 10";
-
-const upgrade2 = document.createElement("button");
-upgrade2.innerHTML = "Ogre <br /> Cost: 100";
-
-const upgrade3 = document.createElement("button");
-upgrade3.innerHTML = "Demon <br /> Cost: 1000";
-
-app.append(upgrade1, upgrade2, upgrade3);
-
 let upgradeValue = 0;
-let numUpgrade1 = 0;
-let numUpgrade2 = 0;
-let numUpgrade3 = 0;
-let upgradeCost1 = 10;
-let upgradeCost2 = 100;
-let upgradeCost3 = 1000;
-upgrade1.disabled = count < 10;
-upgrade2.disabled = count < 100;
-upgrade3.disabled = count < 1000;
 
-const numUpgrades = document.createElement("h2");
-numUpgrades.innerHTML =
-  "Goblins: " +
-  numUpgrade1.toString() +
-  " - Ogres: " +
-  numUpgrade2.toString() +
-  " - Demons: " +
-  numUpgrade3.toString();
-app.append(numUpgrades);
+const button = document.createElement("button");
+
+//items
+interface Item {
+  name: string;
+  cost: number;
+  rate: number;
+  purchased: number;
+  button: HTMLButtonElement;
+}
+
+const availableItems: Item[] = [
+  { name: "Goblin", cost: 10, rate: 0.1, purchased: 0, button },
+  { name: "Ogre", cost: 100, rate: 2, purchased: 0, button },
+  { name: "Demon", cost: 1000, rate: 50, purchased: 0, button },
+];
+
+for (let i = 0; i < availableItems.length; i++) {
+  const upgradeButton = document.createElement("button");
+  upgradeButton.innerHTML = `${availableItems[i].name} <br />Cost: ${availableItems[i].cost.toFixed(2)}<br />Purchased: ${availableItems[i].purchased}`;
+  availableItems[i].button = upgradeButton;
+  upgradeButton.onclick = () => {
+    count -= availableItems[i].cost;
+    upgradeValue += availableItems[i].rate;
+    availableItems[i].purchased += 1;
+    availableItems[i].cost *= 1.15;
+    upgradeButton.innerHTML = `${availableItems[i].name} <br />Cost: ${availableItems[i].cost.toFixed(2)} <br />Purchased: ${availableItems[i].purchased}`;
+    update();
+  };
+  app.append(upgradeButton);
+}
 
 const growthRate = document.createElement("h2");
 growthRate.innerHTML = upgradeValue.toString() + " units of evil/sec";
@@ -62,12 +63,10 @@ app.append(growthRate);
 const incrementClick = (): void => {
   count += 1;
   counterDiv.innerHTML = count.toFixed(2) + " units of evil";
-  upgrade1.disabled = count < upgradeCost1;
-  upgrade2.disabled = count < upgradeCost2;
-  upgrade3.disabled = count < upgradeCost3;
+  update();
 };
 
-button.addEventListener("click", incrementClick);
+clickButton.addEventListener("click", incrementClick);
 
 let zero = performance.now();
 
@@ -76,56 +75,14 @@ function increment() {
   count += value;
   counterDiv.innerHTML = count.toFixed(2) + " units of evil";
   zero = performance.now();
-  upgrade1.disabled = count < upgradeCost1;
-  upgrade2.disabled = count < upgradeCost2;
-  upgrade3.disabled = count < upgradeCost3;
+  update();
+  requestAnimationFrame(increment);
 }
 requestAnimationFrame(increment);
-setInterval(increment, (performance.now() - zero) / 1000);
-
-const upgradeCounter1 = (): void => {
-  count -= 10;
-  upgradeValue += 0.1;
-  numUpgrade1 += 1;
-  upgradeCost1 *= 1.15;
-  upgrade1.innerHTML = "Goblin <br /> Cost: " + upgradeCost1.toFixed(2);
-  update();
-};
-
-upgrade1.addEventListener("click", upgradeCounter1);
-
-const upgradeCounter2 = (): void => {
-  count -= 100;
-  upgradeValue += 2;
-  numUpgrade2 += 1;
-  upgradeCost2 *= 1.15;
-  upgrade2.innerHTML = "Ogre <br /> Cost: " + upgradeCost2.toFixed(2);
-  update();
-};
-
-upgrade2.addEventListener("click", upgradeCounter2);
-
-const upgradeCounter3 = (): void => {
-  count -= 1000;
-  upgradeValue += 50;
-  numUpgrade3 += 1;
-  upgradeCost3 *= 1.15;
-  upgrade3.innerHTML = "Demon <br /> Cost: " + upgradeCost3.toFixed(2);
-  update();
-};
-
-upgrade3.addEventListener("click", upgradeCounter3);
 
 function update() {
   growthRate.innerHTML = upgradeValue.toFixed(2) + " units of evil/sec";
-  numUpgrades.innerHTML =
-    "Goblins: " +
-    numUpgrade1.toString() +
-    " - Ogres: " +
-    numUpgrade2.toString() +
-    " - Demons: " +
-    numUpgrade3.toString();
-  upgrade1.disabled = count < upgradeCost1;
-  upgrade2.disabled = count < upgradeCost2;
-  upgrade3.disabled = count < upgradeCost3;
+  for (let i = 0; i < availableItems.length; i++) {
+    availableItems[i].button.disabled = count < availableItems[i].cost;
+  }
 }
