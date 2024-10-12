@@ -33,26 +33,62 @@ interface Item {
   rate: number;
   purchased: number;
   button: HTMLButtonElement;
+  description: string;
 }
 
 const availableItems: Item[] = [
-  { name: "Goblin", cost: 10, rate: 0.1, purchased: 0, button },
-  { name: "Orc", cost: 100, rate: 2, purchased: 0, button },
-  { name: "Ogre", cost: 1000, rate: 50, purchased: 0, button },
-  { name: "Demon", cost: 10000, rate: 1000, purchased: 0, button },
-  { name: "Devil", cost: 100000, rate: 20000, purchased: 0, button },
+  {
+    name: "Goblin",
+    cost: 10,
+    rate: 0.1,
+    purchased: 0,
+    button,
+    description: "Just a little guy",
+  },
+  {
+    name: "Orc",
+    cost: 100,
+    rate: 2,
+    purchased: 0,
+    button,
+    description: "A brutish looking fella",
+  },
+  {
+    name: "Ogre",
+    cost: 1000,
+    rate: 50,
+    purchased: 0,
+    button,
+    description: "A bulky dude",
+  },
+  {
+    name: "Demon",
+    cost: 10000,
+    rate: 1000,
+    purchased: 0,
+    button,
+    description: "High in command",
+  },
+  {
+    name: "Devil",
+    cost: 100000,
+    rate: 20000,
+    purchased: 0,
+    button,
+    description: "A big deal",
+  },
 ];
 
 for (let i = 0; i < availableItems.length; i++) {
   const upgradeButton = document.createElement("button");
-  upgradeButton.innerHTML = `${availableItems[i].name} <br />Cost: ${availableItems[i].cost.toFixed(2)}<br />Purchased: ${availableItems[i].purchased}`;
+  upgradeButton.innerHTML = `${availableItems[i].name}<br />${availableItems[i].description} <br />Cost: ${availableItems[i].cost.toFixed(2)}<br />Purchased: ${availableItems[i].purchased}`;
   availableItems[i].button = upgradeButton;
   upgradeButton.onclick = () => {
     count -= availableItems[i].cost;
     upgradeValue += availableItems[i].rate;
     availableItems[i].purchased += 1;
     availableItems[i].cost *= 1.15;
-    upgradeButton.innerHTML = `${availableItems[i].name} <br />Cost: ${availableItems[i].cost.toFixed(2)} <br />Purchased: ${availableItems[i].purchased}`;
+    upgradeButton.innerHTML = `${availableItems[i].name}<br />${availableItems[i].description}<br />Cost: ${availableItems[i].cost.toFixed(2)}<br />Purchased: ${availableItems[i].purchased}`;
     update();
   };
   app.append(upgradeButton);
