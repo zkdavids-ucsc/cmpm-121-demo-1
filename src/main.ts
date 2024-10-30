@@ -9,6 +9,9 @@ document.title = gameName;
 const header = document.createElement("h1");
 header.innerHTML = gameName;
 app.append(header);
+const header2 = document.createElement("h1");
+header2.innerHTML = "😇🤝👹";
+app.append(header2);
 
 //click button
 const buttonText = "Plot Evil👹";
@@ -17,14 +20,33 @@ clickButton.innerHTML = `<font size = "12">` + buttonText + `</font>`;
 app.append(clickButton);
 
 //counter
-let count: number = 0;
+let evilCounter: number = 0;
 const counterDiv = document.createElement("h2");
-counterDiv.innerHTML = count.toString() + " units of evil";
+counterDiv.innerHTML = evilCounter.toString() + " units of evil";
 app.append(counterDiv);
 
 let upgradeValue = 0;
 
 const button = document.createElement("button");
+
+let zero = performance.now();
+
+function increment() {
+  const value = ((performance.now() - zero) / 1000) * upgradeValue;
+  evilCounter += value;
+  counterDiv.innerHTML = evilCounter.toFixed(2) + " units of evil";
+  zero = performance.now();
+  update();
+  requestAnimationFrame(increment);
+}
+requestAnimationFrame(increment);
+
+function update() {
+  growthRate.innerHTML = upgradeValue.toFixed(2) + " units of evil/sec";
+  for (let i = 0; i < availableItems.length; i++) {
+    availableItems[i].button.disabled = evilCounter < availableItems[i].cost;
+  }
+}
 
 //items
 interface Item {
@@ -84,7 +106,7 @@ for (let i = 0; i < availableItems.length; i++) {
   upgradeButton.innerHTML = `${availableItems[i].name}<br />${availableItems[i].description} <br />Cost: ${availableItems[i].cost.toFixed(2)}<br />Purchased: ${availableItems[i].purchased}`;
   availableItems[i].button = upgradeButton;
   upgradeButton.onclick = () => {
-    count -= availableItems[i].cost;
+    evilCounter -= availableItems[i].cost;
     upgradeValue += availableItems[i].rate;
     availableItems[i].purchased += 1;
     availableItems[i].cost *= 1.15;
@@ -99,28 +121,9 @@ growthRate.innerHTML = upgradeValue.toString() + " units of evil/sec";
 app.append(growthRate);
 
 const incrementClick = (): void => {
-  count += 1;
-  counterDiv.innerHTML = count.toFixed(2) + " units of evil";
+  evilCounter += 1;
+  counterDiv.innerHTML = evilCounter.toFixed(2) + " units of evil";
   update();
 };
 
 clickButton.addEventListener("click", incrementClick);
-
-let zero = performance.now();
-
-function increment() {
-  const value = ((performance.now() - zero) / 1000) * upgradeValue;
-  count += value;
-  counterDiv.innerHTML = count.toFixed(2) + " units of evil";
-  zero = performance.now();
-  update();
-  requestAnimationFrame(increment);
-}
-requestAnimationFrame(increment);
-
-function update() {
-  growthRate.innerHTML = upgradeValue.toFixed(2) + " units of evil/sec";
-  for (let i = 0; i < availableItems.length; i++) {
-    availableItems[i].button.disabled = count < availableItems[i].cost;
-  }
-}
